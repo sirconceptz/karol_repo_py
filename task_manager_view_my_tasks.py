@@ -240,23 +240,24 @@ def generate_reports():
     tasks_complete_percentage = 0.0
     tasks_overdue_percentage = 0.0
     total_users = 0
-    with open('user.txt', 'r') as f:
+    with open('user.txt', 'r') as f:            #get tasks. you used tasks as a argument of method, but you didn't had initialized any variables with these values
         contents = f.read()
         users = contents.split("\n")
         users.pop()
     total_users = len(users)
-    with open('tasks.txt', 'r') as f:
+    with open('tasks.txt', 'r') as f:           #this same like above
         contents = f.read()
         tasks = contents.split("\n")
+        tasks.pop()
     total_tasks = len(tasks)
-    for task in tasks:
-        is_completed = task.rsplit(',', 1)[-1]
+    for task in tasks:                          #check is task complete by checking is exist string "Yes" in whole task string
+        is_completed = task.rsplit(',', 1)[-1]  #extract last item from this line of string
         if "Yes" in is_completed:
             completed_tasks += 1
         else:
             uncompleted_tasks += 1
 
-    tasks_complete_percentage = ( completed_tasks / total_tasks ) * 100
+    tasks_complete_percentage = ( completed_tasks / total_tasks ) * 100         #process values not there where you want to display something, but create variables. it's easier to read and understand the invention of code
     tasks_uncomplete_percentage = ( uncompleted_tasks / total_tasks ) * 100
     task_overview = []
     task_overview.append(f"Total number of tasks: {total_tasks}")
@@ -273,13 +274,20 @@ def generate_reports():
     user_overview.append(f"Total number of users: {total_users}")
     user_overview.append(f"Total number of tasks: {total_tasks}")
     for user in users:
+        total_tasks = 0
+        completed_tasks = 0
+        uncompleted_tasks = 0
+        total_overdue_tasks = 0
+        tasks_uncomplete_percentage = 0.0
+        tasks_complete_percentage = 0.0
+        tasks_overdue_percentage = 0.0
     #    user_overview.append(f"\nUser: {user['name']}")
     #    user_overview.append(f"Total number of tasks assigned to user: {len(user_tasks)}")
     #    user_overview.append(f"Percentage of tasks assigned to user: {len(user_tasks) / len(tasks) * 100}%")
     #    completed_user_tasks = [task for task in user_tasks if task["status"] == "completed"]
-    user_overview.append(f"Percentage of completed tasks assigned to user: {tasks_complete_percentage}%")
+        user_overview.append(f"Percentage of completed tasks assigned to user: {tasks_complete_percentage}%")
     #    uncompleted_user_tasks = [task for task in user_tasks if task["status"] != "completed"]
-    user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
+        user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
     #    overdue_user_tasks = [task for task in uncompleted_user_tasks if task["due_date"] < datetime.now()]
     #    user_overview.append(f"Percentage of overdue tasks assigned to user: {len(overdue_user_tasks) / len(user_tasks) * 100}%")
 
@@ -312,6 +320,7 @@ while True:
         print("╚══════════════════════════════════════╝")
         menu = input(": ").lower()
 
+# I said you before, that You have to use if-elif-else, not just single ifs and else to the last if
 # The code that follows allows the selection of a particular menu item and calls the relevant function
     if menu == 's':
         if is_admin:

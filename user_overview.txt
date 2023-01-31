@@ -1,4 +1,12 @@
 Total number of users: 5
 Total number of tasks: 3
-Percentage of completed tasks assigned to user: 33.33333333333333%
-Percentage of uncompleted tasks assigned to user: 66.66666666666666%
+Percentage of completed tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of completed tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of completed tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of completed tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of completed tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 0.0%
