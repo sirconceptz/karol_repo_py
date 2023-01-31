@@ -322,15 +322,13 @@ while True:
 
 # I said you before, that You have to use if-elif-else, not just single ifs and else to the last if
 # The code that follows allows the selection of a particular menu item and calls the relevant function
-    if menu == 's':
-        if is_admin:
-            print_statistics()
-    elif menu == 'r':
-        if is_admin:
-            register_user(logged_in_user)
-    elif menu == 'a':
-        if is_admin:
-            add_task(logged_in_user)
+# Avoid nesting if statements. That's what operators like And or Or should be used for. Something like that it neither efficient or comfortable to read.
+    if menu == 's' and is_admin:
+        print_statistics()
+    elif menu == 'r' and is_admin:
+        register_user(logged_in_user)
+    elif menu == 'a' and is_admin:
+        add_task(logged_in_user)
     elif menu == 'va':
         view_all_tasks()
     elif menu == 'vm':
@@ -338,8 +336,7 @@ while True:
     elif menu == 'e':
         print("\nGoodbye!")
         break
-    elif menu == 'gr':
-        if is_admin:
-            generate_reports()
+    elif menu == 'gr' and is_admin:
+        generate_reports()
     else:
     	print("\nInvalid input. Please try again.")
