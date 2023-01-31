@@ -273,7 +273,7 @@ def generate_reports():
     user_overview.append(f"Total number of users: {total_users}")
     user_overview.append(f"Total number of tasks: {total_tasks}")
     for user in users:
-        user_overview.append(f"\nUser: {user['name']}")
+    #    user_overview.append(f"\nUser: {user['name']}")
     #    user_overview.append(f"Total number of tasks assigned to user: {len(user_tasks)}")
     #    user_overview.append(f"Percentage of tasks assigned to user: {len(user_tasks) / len(tasks) * 100}%")
     #    completed_user_tasks = [task for task in user_tasks if task["status"] == "completed"]
