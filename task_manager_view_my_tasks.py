@@ -96,10 +96,6 @@ def register_user(username):
     else:
         print("You do not have permission to register new users.")
 
-
-
-
-
 # This function allows the admin to assign tasks to users. It checks if username is found in user.txt and if so, adds tasks details to tasks.txt
 def add_task(username):
     if username == 'admin':
@@ -132,7 +128,6 @@ def add_task(username):
     else:
         print("You do not have permission to add tasks.")
 
-
 # This function prints the contents of tasks.txt in an organised way, allowing the user to see all existing tasks
 def view_all_tasks():
     with open('tasks.txt', 'r') as tasks_read:
@@ -156,6 +151,7 @@ def view_all_tasks():
             print(output)
 
 #### nie moge ogarnac tej funkcji za chuja, zle edytuje tasks. txt. usuwa wartosc. pogubilem sie!
+## Do not use polish language in source files. It's very bad practice. Every dev must know english enough to understand.
 # This function allows the user to view their tasks and edit them.
 def view_my_tasks(logged_in_user):
     def edit_task(task, field, new_value):
@@ -235,37 +231,59 @@ def view_my_tasks(logged_in_user):
                 return
 
 
-def generate_reports(tasks, users):
-    task_overview = []
-    task_overview.append(f"Total number of tasks: {len(tasks)}")
-    completed_tasks = [task for task in tasks if task["status"] == "completed"]
-    task_overview.append(f"Total number of completed tasks: {len(completed_tasks)}")
-    uncompleted_tasks = [task for task in tasks if task["status"] != "completed"]
-    task_overview.append(f"Total number of uncompleted tasks: {len(uncompleted_tasks)}")
-    overdue_tasks = [task for task in uncompleted_tasks if task["due_date"] < datetime.now()]
-    task_overview.append(f"Total number of overdue tasks: {len(overdue_tasks)}")
-    task_overview.append(f"Percentage of tasks that are incomplete: {len(uncompleted_tasks) / len(tasks) * 100}%")
-    task_overview.append(f"Percentage of tasks that are overdue: {len(overdue_tasks) / len(tasks) * 100}%")
+def generate_reports():
+    total_tasks = 0
+    completed_tasks = 0
+    uncompleted_tasks = 0
+    total_overdue_tasks = 0
+    tasks_uncomplete_percentage = 0.0
+    tasks_complete_percentage = 0.0
+    tasks_overdue_percentage = 0.0
+    total_users = 0
+    with open('user.txt', 'r') as f:
+        contents = f.read()
+        users = contents.split("\n")
+        users.pop()
+    total_users = len(users)
+    with open('tasks.txt', 'r') as f:
+        contents = f.read()
+        tasks = contents.split("\n")
+    total_tasks = len(tasks)
+    for task in tasks:
+        is_completed = task.rsplit(',', 1)[-1]
+        if "Yes" in is_completed:
+            completed_tasks += 1
+        else:
+            uncompleted_tasks += 1
 
-    with open("task_overview.txt", "w") as file:
+    tasks_complete_percentage = ( completed_tasks / total_tasks ) * 100
+    tasks_uncomplete_percentage = ( uncompleted_tasks / total_tasks ) * 100
+    task_overview = []
+    task_overview.append(f"Total number of tasks: {total_tasks}")
+    task_overview.append(f"Total number of completed tasks: {completed_tasks}")
+    task_overview.append(f"Total number of uncompleted tasks: {uncompleted_tasks}")
+    task_overview.append(f"Total number of overdue tasks: {total_overdue_tasks}")
+    task_overview.append(f"Percentage of tasks that are incomplete: {tasks_uncomplete_percentage}%")
+    task_overview.append(f"Percentage of tasks that are overdue: {tasks_overdue_percentage}%")
+
+    with open("task_overview.txt", "w+") as file:
         file.write("\n".join(task_overview))
 
     user_overview = []
-    user_overview.append(f"Total number of users: {len(users)}")
-    user_overview.append(f"Total number of tasks: {len(tasks)}")
+    user_overview.append(f"Total number of users: {total_users}")
+    user_overview.append(f"Total number of tasks: {total_tasks}")
     for user in users:
-        user_tasks = [task for task in tasks if task["assigned_to"] == user["name"]]
         user_overview.append(f"\nUser: {user['name']}")
-        user_overview.append(f"Total number of tasks assigned to user: {len(user_tasks)}")
-        user_overview.append(f"Percentage of tasks assigned to user: {len(user_tasks) / len(tasks) * 100}%")
-        completed_user_tasks = [task for task in user_tasks if task["status"] == "completed"]
-        user_overview.append(f"Percentage of completed tasks assigned to user: {len(completed_user_tasks) / len(user_tasks) * 100}%")
-        uncompleted_user_tasks = [task for task in user_tasks if task["status"] != "completed"]
-        user_overview.append(f"Percentage of uncompleted tasks assigned to user: {len(uncompleted_user_tasks) / len(user_tasks) * 100}%")
-        overdue_user_tasks = [task for task in uncompleted_user_tasks if task["due_date"] < datetime.now()]
-        user_overview.append(f"Percentage of overdue tasks assigned to user: {len(overdue_user_tasks) / len(user_tasks) * 100}%")
+    #    user_overview.append(f"Total number of tasks assigned to user: {len(user_tasks)}")
+    #    user_overview.append(f"Percentage of tasks assigned to user: {len(user_tasks) / len(tasks) * 100}%")
+    #    completed_user_tasks = [task for task in user_tasks if task["status"] == "completed"]
+    user_overview.append(f"Percentage of completed tasks assigned to user: {tasks_complete_percentage}%")
+    #    uncompleted_user_tasks = [task for task in user_tasks if task["status"] != "completed"]
+    user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
+    #    overdue_user_tasks = [task for task in uncompleted_user_tasks if task["due_date"] < datetime.now()]
+    #    user_overview.append(f"Percentage of overdue tasks assigned to user: {len(overdue_user_tasks) / len(user_tasks) * 100}%")
 
-    with open("user_overview.txt", "w") as file:
+    with open("user_overview.txt", "w+") as file:
         file.write("\n".join(user_overview))
 
 # This part of the code shows the user two different menus and options depending on whether the logged in user is the admin or not.
@@ -313,6 +331,6 @@ while True:
         break
     elif menu == 'gr':
         if is_admin:
-            generate_reports(tasks, users)
+            generate_reports()
     else:
     	print("\nInvalid input. Please try again.")
