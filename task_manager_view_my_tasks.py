@@ -307,28 +307,21 @@ while True:
     if menu == 's':
         if is_admin:
             print_statistics()
-
-    if menu == 'r':
+    elif menu == 'r':
         if is_admin:
             register_user(logged_in_user)
-
-    if menu == 'a':
+    elif menu == 'a':
         if is_admin:
             add_task(logged_in_user)
-
-    if menu == 'va':
+    elif menu == 'va':
         view_all_tasks()
-
-    if menu == 'vm':
+    elif menu == 'vm':
         view_my_tasks(logged_in_user)
-
-    if menu == 'e':
+    elif menu == 'e':
         print("\nGoodbye!")
         break
-
-    if menu == 'gr':
+    elif menu == 'gr':
         if is_admin:
             generate_reports(tasks, users)
-
-else:
-    print("\nInvalid input. Please try again.") 
+    else:
+    	print("\nInvalid input. Please try again.")
