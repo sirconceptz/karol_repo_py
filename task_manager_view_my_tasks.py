@@ -190,49 +190,49 @@ def view_my_tasks(logged_in_user):
                 users = [line.split(',')[0].strip() for line in contents.split('\n') if line]
 
             task_number = input("Enter the number of the task you want to mark as complete or edit (or -1 to go back): ")
-            if task_number == "-1":
-                return
-            task_number = int(task_number)
-            task = my_tasks[task_number - 1]
-            split_data = task.split(', ')
+            if task_number != "-1":
+                task_number = int(task_number)
+                task = my_tasks[task_number - 1]
+                split_data = task.split(', ')
 
-            if split_data[5].strip() == "Yes":
-                print("Task is already marked as complete and cannot be edited.")
-                return
+                if split_data[5].strip() == "Yes":
+                    print("Task is already marked as complete and cannot be edited.")
+                    return
 
-            complete = input("Mark as complete? (yes/no): ")
-            if complete == 'yes':
-                my_tasks[task_number - 1] = edit_task(task, 5, 'Yes\n')
-                with open('tasks.txt', 'w') as tasks_write:
-                    tasks_write.writelines(my_tasks)
-                print("Task marked as complete.")
-                view_my_tasks(logged_in_user)
-            else:
-                edit_field = input("Enter 0 to edit 'Assigned to' or 4 to edit 'Due date': ")
-                if edit_field == '0':
-                    new_value = input(f"Enter the new value for 'Assigned to': ")
-                    if new_value in users:
+                complete = input("Mark as complete? (yes/no): ")
+                if complete == 'yes':
+                    my_tasks[task_number - 1] = edit_task(task, 5, 'Yes\n')
+                    with open('tasks.txt', 'w') as tasks_write:
+                        tasks_write.writelines(my_tasks)
+                    print("Task marked as complete.")
+                    view_my_tasks(logged_in_user)
+                else:
+                    edit_field = input("Enter 0 to edit 'Assigned to' or 4 to edit 'Due date': ")
+                    if edit_field == '0':
+                        new_value = input(f"Enter the new value for 'Assigned to': ")
+                        if new_value in users:
+                            assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
+                            updated_task = f"Assigned to: {new_value}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {due_date}, Is completed: {is_completed}"
+                            my_tasks[task_number - 1] = updated_task
+                            with open('tasks.txt', 'w') as tasks_write:
+                                tasks_write.writelines(my_tasks)
+                            print("Assigned to value updated.")
+                            view_my_tasks(logged_in_user)
+                        else:
+                            print("Invalid user")
+                    elif edit_field == '4':
+                        new_value = input(f"Enter the new value for 'Due date': ")
                         assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
-                        updated_task = f"Assigned to: {new_value}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {due_date}, Is completed: {is_completed}"
+                        updated_task = f"Assigned to: {assigned_to}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {new_value}, Is completed: {is_completed}"
                         my_tasks[task_number - 1] = updated_task
                         with open('tasks.txt', 'w') as tasks_write:
                             tasks_write.writelines(my_tasks)
-                        print("Assigned to value updated.")
+                        print("Due date updated.")
                         view_my_tasks(logged_in_user)
                     else:
-                        print("Invalid user")
-                elif edit_field == '4':
-                    new_value = input(f"Enter the new value for 'Due date': ")
-                    assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
-                    updated_task = f"Assigned to: {assigned_to}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {new_value}, Is completed: {is_completed}"
-                    my_tasks[task_number - 1] = updated_task
-                    with open('tasks.txt', 'w') as tasks_write:
-                        tasks_write.writelines(my_tasks)
-                    print("Due date updated.")
-                    view_my_tasks(logged_in_user)
-                else:
-                    print("Invalid field")
-
+                        print("Invalid field")
+            else:
+                return
 
 
 def generate_reports(tasks, users):
@@ -267,15 +267,6 @@ def generate_reports(tasks, users):
 
     with open("user_overview.txt", "w") as file:
         file.write("\n".join(user_overview))
-
-
-
-
-
-
-
-
-
 
 # This part of the code shows the user two different menus and options depending on whether the logged in user is the admin or not.
 while True:
