@@ -242,7 +242,7 @@ def generate_reports():
     tasks_complete_percentage = 0.0
     tasks_overdue_percentage = 0.0
     total_users = 0
-    with open('user.txt', 'r') as f:            #get tasks. you used tasks as a argument of method, but you didn't had initialized any variables with these values
+    with open('user.txt', 'r') as f:            #get users. you used tasks as a argument of method, but you didn't had initialized any variables with these values
         contents = f.read()
         users = contents.split("\n")
         users.pop()
@@ -258,9 +258,14 @@ def generate_reports():
             completed_tasks += 1
         else:
             uncompleted_tasks += 1
+        overdue_date_task_str = task.split(', ')[4]
+        overdue_date_task = datetime.datetime.strptime(overdue_date_task_str, '%d %b %Y')
+        if overdue_date_task < datetime.datetime.now():
+            total_overdue_tasks += 1
 
     tasks_complete_percentage = round((( completed_tasks / total_tasks ) * 100), 2)         #process values not there where you want to display something, but create variables. it's easier to read and understand the invention of code
     tasks_uncomplete_percentage = round((( uncompleted_tasks / total_tasks ) * 100), 2)     #round to 2 digits after dot
+    tasks_overdue_percentage = round((( total_overdue_tasks / total_tasks ) * 100), 2)     #round to 2 digits after dot
     task_overview = []
     task_overview.append(f"Total number of tasks: {total_tasks}")
     task_overview.append(f"Total number of completed tasks: {completed_tasks}")
