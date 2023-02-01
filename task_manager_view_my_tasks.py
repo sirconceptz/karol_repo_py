@@ -90,7 +90,7 @@ def register_user(username):
             else:
                 print("Passwords do not match. Please try again.")
         with open('user.txt', 'a') as file:
-            file.write(f'\n{new_user}, {password}\n')
+            file.write(f'{new_user}, {password}\n')
             print("\nNew user added successfully!")
             
     else:
@@ -115,10 +115,12 @@ def add_task(username):
             if found:
                 title = input("Enter task name: ")
                 description = input("Enter task description: ")
-                due_date = input("Enter task due date: ")
-                current_date = datetime.datetime.now().strftime('%d/%m/%Y')
+                due_date_str = input("Enter task due date: ")
+                due_date = datetime.datetime.strptime(due_date_str, '%d/%m/%Y')
+                due_date_str = due_date.strftime('%d %b %Y')
+                current_date = datetime.datetime.now().strftime('%d %b %Y')                                 #
                 with open('tasks.txt', 'a') as file:
-                    file.write(f"{assigned_to}, {title}, {description}, {current_date}, {due_date}, No\n")
+                    file.write(f"{assigned_to}, {title}, {description}, {current_date}, {due_date_str}, No\n")
                     print("\nTask added successfully!")
                     # refresh the contents of the file
                     with open('tasks.txt', 'r') as file:
@@ -257,8 +259,8 @@ def generate_reports():
         else:
             uncompleted_tasks += 1
 
-    tasks_complete_percentage = ( completed_tasks / total_tasks ) * 100         #process values not there where you want to display something, but create variables. it's easier to read and understand the invention of code
-    tasks_uncomplete_percentage = ( uncompleted_tasks / total_tasks ) * 100
+    tasks_complete_percentage = round((( completed_tasks / total_tasks ) * 100), 2)         #process values not there where you want to display something, but create variables. it's easier to read and understand the invention of code
+    tasks_uncomplete_percentage = round((( uncompleted_tasks / total_tasks ) * 100), 2)     #round to 2 digits after dot
     task_overview = []
     task_overview.append(f"Total number of tasks: {total_tasks}")
     task_overview.append(f"Total number of completed tasks: {completed_tasks}")
