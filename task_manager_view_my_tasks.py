@@ -10,7 +10,7 @@
 # or the user quits.
 
 
-import datetime
+from datetime import datetime
 
 def login():
     while True:
@@ -116,9 +116,9 @@ def add_task(username):
                 title = input("Enter task name: ")
                 description = input("Enter task description: ")
                 due_date_str = input("Enter task due date: ")
-                due_date = datetime.datetime.strptime(due_date_str, '%d/%m/%Y')
+                due_date = datetime.strptime(due_date_str, '%d/%m/%Y')
                 due_date_str = due_date.strftime('%d %b %Y')
-                current_date = datetime.datetime.now().strftime('%d %b %Y')                                 #
+                current_date = datetime.now().strftime('%d %b %Y')                                 #
                 with open('tasks.txt', 'a') as file:
                     file.write(f"{assigned_to}, {title}, {description}, {current_date}, {due_date_str}, No\n")
                     print("\nTask added successfully!")
@@ -232,7 +232,6 @@ def view_my_tasks(logged_in_user):
             else:
                 return
 
-
 def generate_reports():
     total_tasks = 0
     completed_tasks = 0
@@ -259,8 +258,8 @@ def generate_reports():
         else:
             uncompleted_tasks += 1
         overdue_date_task_str = task.split(', ')[4]
-        overdue_date_task = datetime.datetime.strptime(overdue_date_task_str, '%d %b %Y')
-        if overdue_date_task < datetime.datetime.now():
+        overdue_date_task = datetime.strptime(overdue_date_task_str, '%d %b %Y')
+        if overdue_date_task < datetime.now():
             total_overdue_tasks += 1
 
     tasks_complete_percentage = round((( completed_tasks / total_tasks ) * 100), 2)         #process values not there where you want to display something, but create variables. it's easier to read and understand the invention of code
@@ -280,24 +279,46 @@ def generate_reports():
     user_overview = []
     user_overview.append(f"Total number of users: {total_users}")
     user_overview.append(f"Total number of tasks: {total_tasks}")
-    for user in users:
-        total_tasks = 0
+    with open('user.txt', 'r') as users_read:
+        data = users_read.readlines()
+        
+    for id, user in enumerate(users):
+        user_array_data = user.split(',')
+        tested_username = user_array_data[0]
+        all_tasks = len(tasks)
+        user_tasks = 0
         completed_tasks = 0
         uncompleted_tasks = 0
         total_overdue_tasks = 0
         tasks_uncomplete_percentage = 0.0
         tasks_complete_percentage = 0.0
         tasks_overdue_percentage = 0.0
-    #    user_overview.append(f"\nUser: {user['name']}")
-    #    user_overview.append(f"Total number of tasks assigned to user: {len(user_tasks)}")
-    #    user_overview.append(f"Percentage of tasks assigned to user: {len(user_tasks) / len(tasks) * 100}%")
-    #    completed_user_tasks = [task for task in user_tasks if task["status"] == "completed"]
-        user_overview.append(f"Percentage of completed tasks assigned to user: {tasks_complete_percentage}%")
-    #    uncompleted_user_tasks = [task for task in user_tasks if task["status"] != "completed"]
+        tasks_owned_by_user = 0
+        for task in tasks:
+            task_str_array = task.split(', ')
+            username_task_owner = task_str_array[0]
+            is_completed = task.rsplit(', ', 1)[-1]
+            if tested_username == username_task_owner:
+                user_tasks += 1
+                if "Yes" in is_completed:
+                    completed_tasks += 1
+                else:
+                    uncompleted_tasks += 1
+                overdue_date_task_str = task_str_array[4]
+                overdue_date_task = datetime.strptime(overdue_date_task_str, '%d %b %Y')
+                if (overdue_date_task < datetime.now()) & ("Yes" in is_completed):
+                    total_overdue_tasks += 1
+        user_overview.append(f"User: {tested_username}")
+        if(user_tasks > 0):
+            tasks_complete_percentage = round((( completed_tasks / user_tasks ) * 100), 2)
+            tasks_uncomplete_percentage = round((( uncompleted_tasks / user_tasks ) * 100), 2)
+            tasks_overdue_percentage = round((( total_overdue_tasks / user_tasks ) * 100), 2)
+            tasks_owned_by_user = round((( user_tasks / all_tasks ) * 100), 2)
+        user_overview.append(f"Percentage of completed tasks assigned to : {tasks_complete_percentage}%")
         user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
-    #    overdue_user_tasks = [task for task in uncompleted_user_tasks if task["due_date"] < datetime.now()]
-    #    user_overview.append(f"Percentage of overdue tasks assigned to user: {len(overdue_user_tasks) / len(user_tasks) * 100}%")
-
+        user_overview.append(f"Percentage of uncompleted and overdue tasks assigned to user: {tasks_uncomplete_percentage}%")
+        user_overview.append(f"Percentage of tasks owned by this user: {tasks_owned_by_user}%")
+        
     with open("user_overview.txt", "w+") as file:
         file.write("\n".join(user_overview))
 
