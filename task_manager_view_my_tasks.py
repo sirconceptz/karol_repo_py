@@ -183,6 +183,9 @@ def view_my_tasks(logged_in_user):
                 output += '────────────\n'
                 print(output)
 
+
+
+
             with open('user.txt', 'r') as f:
                 contents = f.read()
                 users = [line.split(',')[0].strip() for line in contents.split('\n') if line]
