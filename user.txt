@@ -1,3 +1,4 @@
 admin,adm1n
 bronek,dupa
 dziada,dziadkowski
+klaudia, klaudia

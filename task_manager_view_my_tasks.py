@@ -164,9 +164,12 @@ def view_my_tasks(logged_in_user):
     with open('tasks.txt', 'r') as tasks_read:
         data = tasks_read.readlines()
         my_tasks = []
-        for line in data:
+        all_tasks = []
+        for id, line in enumerate(data):
             if line.startswith(logged_in_user + ', '):
-                my_tasks.append(line)
+                my_tasks.append(f'{line}, {id}')
+                #my_tasks.append(line)
+            all_tasks.append(line)
 
         if my_tasks:
             for pos, line in enumerate(my_tasks, 1):
@@ -212,24 +215,24 @@ def view_my_tasks(logged_in_user):
                     if edit_field == '0':
                         new_value = input(f"Enter the new value for 'Assigned to': ")
                         if new_value in users:
-                            assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
+                            assigned_to, task, description, assigned_date, due_date, is_completed, id_task = task.split(', ')
                             updated_task = f"{new_value}, {task}, {description}, {assigned_date}, {due_date}, {is_completed}"
-                            my_tasks[task_number - 1] = updated_task
+                            all_tasks[int(id_task)] = updated_task
                             with open('tasks.txt', 'w') as tasks_write:
-                                tasks_write.writelines(my_tasks)
+                                tasks_write.writelines(all_tasks)
                             print("Assigned to value updated.")
                             view_my_tasks(logged_in_user)
                         else:
                             print("Invalid user")
                     elif edit_field == '4':
-                        assigned_to, task, description, assigned_date, due_date_str, is_completed = task.split(', ')
+                        assigned_to, task, description, assigned_date, due_date_str, is_completed, id_task = task.split(', ')
                         due_date_str = input(f"Enter the new value for 'Due date': ")
                         due_date = datetime.strptime(due_date_str, '%d/%m/%Y')
                         due_date_str = due_date.strftime('%d %b %Y')
                         updated_task = f"{assigned_to}, {task}, {description}, {assigned_date}, {due_date_str}, {is_completed}"
-                        my_tasks[task_number - 1] = updated_task
+                        all_tasks[int(id_task)] = updated_task
                         with open('tasks.txt', 'w') as tasks_write:
-                            tasks_write.writelines(my_tasks)
+                            tasks_write.writelines(all_tasks)
                         print("Due date updated.")
                         view_my_tasks(logged_in_user)
                     else:
