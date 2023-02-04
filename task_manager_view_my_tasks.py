@@ -257,7 +257,6 @@ def generate_reports():
     with open('tasks.txt', 'r') as f:           #this same like above
         contents = f.read()
         tasks = contents.split("\n")
-        tasks.pop()
     total_tasks = len(tasks)
     for task in tasks:                          #check is task complete by checking is exist string "Yes" in whole task string
         is_completed = task.rsplit(',', 1)[-1]  #extract last item from this line of string
@@ -298,6 +297,7 @@ def generate_reports():
         completed_tasks = 0
         uncompleted_tasks = 0
         total_overdue_tasks = 0
+        tasks_owned_by_user_percentage = 0.0
         tasks_uncomplete_percentage = 0.0
         tasks_complete_percentage = 0.0
         tasks_overdue_percentage = 0.0
@@ -318,10 +318,13 @@ def generate_reports():
                     total_overdue_tasks += 1
         user_overview.append(f"User: {tested_username}")
         if(user_tasks > 0):
+            tasks_owned_by_user_percentage = round((( user_tasks / all_tasks) * 100), 2)
             tasks_complete_percentage = round((( completed_tasks / user_tasks ) * 100), 2)
             tasks_uncomplete_percentage = round((( uncompleted_tasks / user_tasks ) * 100), 2)
             tasks_overdue_percentage = round((( total_overdue_tasks / user_tasks ) * 100), 2)
             tasks_owned_by_user = round((( user_tasks / all_tasks ) * 100), 2)
+        user_overview.append(f"Tasks assigned by user : {user_tasks}")
+        user_overview.append(f"Percentage of tasks assigned by user : {tasks_owned_by_user_percentage}%")
         user_overview.append(f"Percentage of completed tasks assigned to : {tasks_complete_percentage}%")
         user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
         user_overview.append(f"Percentage of uncompleted and overdue tasks assigned to user: {tasks_overdue_percentage}%")

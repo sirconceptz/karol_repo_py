@@ -1,4 +1,3 @@
-admin,adm1n
-bronek,dupa
-dziada,dziadkowski
+admin, adm1n
+bronek, dupa
 klaudia, klaudia

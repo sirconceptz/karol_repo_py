@@ -1,17 +1,23 @@
 Total number of users: 3
-Total number of tasks: 4
+Total number of tasks: 5
 User: admin
+Tasks assigned by user : 3
+Percentage of tasks assigned by user : 60.0%
 Percentage of completed tasks assigned to : 33.33%
 Percentage of uncompleted tasks assigned to user: 66.67%
-Percentage of uncompleted and overdue tasks assigned to user: 66.67%
-Percentage of tasks owned by this user: 75.0%
+Percentage of uncompleted and overdue tasks assigned to user: 33.33%
+Percentage of tasks owned by this user: 60.0%
 User: bronek
+Tasks assigned by user : 1
+Percentage of tasks assigned by user : 20.0%
 Percentage of completed tasks assigned to : 0.0%
-Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of uncompleted tasks assigned to user: 100.0%
 Percentage of uncompleted and overdue tasks assigned to user: 0.0%
-Percentage of tasks owned by this user: 0%
-User: dziada
-Percentage of completed tasks assigned to : 100.0%
-Percentage of uncompleted tasks assigned to user: 0.0%
+Percentage of tasks owned by this user: 20.0%
+User: klaudia
+Tasks assigned by user : 1
+Percentage of tasks assigned by user : 20.0%
+Percentage of completed tasks assigned to : 0.0%
+Percentage of uncompleted tasks assigned to user: 100.0%
 Percentage of uncompleted and overdue tasks assigned to user: 0.0%
-Percentage of tasks owned by this user: 25.0%
+Percentage of tasks owned by this user: 20.0%
