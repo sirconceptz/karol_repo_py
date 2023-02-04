@@ -213,7 +213,7 @@ def view_my_tasks(logged_in_user):
                         new_value = input(f"Enter the new value for 'Assigned to': ")
                         if new_value in users:
                             assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
-                            updated_task = f"Assigned to: {new_value}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {due_date}, Is completed: {is_completed}"
+                            updated_task = f"{new_value}, {task}, {description}, {assigned_date}, {due_date}, {is_completed}"
                             my_tasks[task_number - 1] = updated_task
                             with open('tasks.txt', 'w') as tasks_write:
                                 tasks_write.writelines(my_tasks)
@@ -222,9 +222,11 @@ def view_my_tasks(logged_in_user):
                         else:
                             print("Invalid user")
                     elif edit_field == '4':
-                        new_value = input(f"Enter the new value for 'Due date': ")
-                        assigned_to, task, description, assigned_date, due_date, is_completed = task.split(', ')
-                        updated_task = f"Assigned to: {assigned_to}, Task: {task}, Description: {description}, Assigned Date: {assigned_date}, Due Date: {new_value}, Is completed: {is_completed}"
+                        assigned_to, task, description, assigned_date, due_date_str, is_completed = task.split(', ')
+                        due_date_str = input(f"Enter the new value for 'Due date': ")
+                        due_date = datetime.strptime(due_date_str, '%d/%m/%Y')
+                        due_date_str = due_date.strftime('%d %b %Y')
+                        updated_task = f"{assigned_to}, {task}, {description}, {assigned_date}, {due_date_str}, {is_completed}"
                         my_tasks[task_number - 1] = updated_task
                         with open('tasks.txt', 'w') as tasks_write:
                             tasks_write.writelines(my_tasks)
@@ -309,7 +311,7 @@ def generate_reports():
                     uncompleted_tasks += 1
                 overdue_date_task_str = task_str_array[4]
                 overdue_date_task = datetime.strptime(overdue_date_task_str, '%d %b %Y')
-                if (overdue_date_task < datetime.now()) & ("Yes" in is_completed):
+                if (overdue_date_task < datetime.now()) & ("No" in is_completed):
                     total_overdue_tasks += 1
         user_overview.append(f"User: {tested_username}")
         if(user_tasks > 0):
@@ -319,7 +321,7 @@ def generate_reports():
             tasks_owned_by_user = round((( user_tasks / all_tasks ) * 100), 2)
         user_overview.append(f"Percentage of completed tasks assigned to : {tasks_complete_percentage}%")
         user_overview.append(f"Percentage of uncompleted tasks assigned to user: {tasks_uncomplete_percentage}%")
-        user_overview.append(f"Percentage of uncompleted and overdue tasks assigned to user: {tasks_uncomplete_percentage}%")
+        user_overview.append(f"Percentage of uncompleted and overdue tasks assigned to user: {tasks_overdue_percentage}%")
         user_overview.append(f"Percentage of tasks owned by this user: {tasks_owned_by_user}%")
         
     with open("user_overview.txt", "w+") as file:
